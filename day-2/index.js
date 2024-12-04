@@ -8,25 +8,46 @@ fs.readFile('./reports.txt', 'utf8', (err, data) => {
   }
   const reports = organiseReports(data);
   console.log(getTotalSafeReports(reports))
-  console.log(isGapLessThan4([1,3,5,3,7,9]))
 
 
 });
 
 function organiseReports(data) {
     const allReports = data.split("\r\n")
-    console.log(allReports[allReports.length - 1])
     return allReports
 }
 
 function getTotalSafeReports(reports) {
     let total = 0
     for(const report of reports) {
-        if(isReportSafe(report))
+        if(isReportSafe(report)) {
             total++
+        }
+        else if(canUnsafeReportBeSafe(report)){
+            total++
+        }
+            
     }
 
     return total
+}
+
+function canUnsafeReportBeSafe(report) {
+    let levels = report.split(" ")
+    levels = levels.map((level) => { return Number(level)})
+
+    for(let i = 0; i < levels.length; i++) {
+        //remove element
+        let testArr = levels.slice()
+        testArr.splice(i, 1) //remove test element from index
+        testArr = testArr.join(" ")
+        console.log(testArr)
+
+       if(isReportSafe(testArr)) { //check if new array is safe
+           return true //if it is it's actually safe
+       }
+   }
+    return false //return false if it can't ever be safe
 }
 
 function isReportSafe(report) {
