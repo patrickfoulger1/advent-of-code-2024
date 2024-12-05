@@ -1,4 +1,3 @@
-const { log } = require('node:console');
 const fs = require('node:fs');
 
 fs.readFile('./corruptedCode.txt', 'utf8', (err, data) => {
@@ -12,7 +11,9 @@ fs.readFile('./corruptedCode.txt', 'utf8', (err, data) => {
 });
 
 function getResult(corruptedCode) {
-    const matchArrays = corruptedCode.matchAll(/mul\((\d+),(\d+)\)/g)
+
+    const matchArrays = removeDontSections(corruptedCode).matchAll(/mul\((\d+),(\d+)\)/g)
+
     let total = 0
 
     matchArrays.forEach(matchArr => {
@@ -21,4 +22,11 @@ function getResult(corruptedCode) {
 
     return total
    
+}
+
+function removeDontSections(corruptedCode) {
+    
+    return corruptedCode.replace(/don't\(\)[\s\S]*?do\(\)/g, "")
+    
+
 }
