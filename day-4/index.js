@@ -86,7 +86,7 @@ function getXmasCount(wordSearch) {
      
     }
     
-    console.log(cells)
+  
     for(const cell of cells) {
       if(cell.value === "A") {
         if(checkIfMas(cell, cells)) {
